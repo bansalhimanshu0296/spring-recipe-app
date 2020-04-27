@@ -5,6 +5,7 @@ import himanshu.springframwork.recipe.model.*;
 import himanshu.springframwork.recipe.repositories.CategoryRepository;
 import himanshu.springframwork.recipe.repositories.RecipeRepository;
 import himanshu.springframwork.recipe.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
+
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -30,11 +32,12 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        log.debug("In Recipe BootStrap onApplicationEvent()");
         recipeRepository.saveAll(getRecipes());
     }
 
     private List<Recipe> getRecipes() {
-
+        log.debug("In Recipe BootStrap getRecipes()");
         List<Recipe> recipes = new ArrayList<>(2);
 
         //get UOMs
