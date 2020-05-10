@@ -55,7 +55,7 @@ class IndexControllerTest {
         recipe2.setId(2L);
         recipes.add(recipe2);
 
-        when(recipeService.getRecipes()).thenReturn(recipes);
+        when(recipeService.findAll()).thenReturn(recipes);
 
         ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
@@ -63,7 +63,7 @@ class IndexControllerTest {
 
         assertEquals("index",viewName);
 
-        verify(recipeService,times(1)).getRecipes();
+        verify(recipeService,times(1)).findAll();
         verify(model,times(1)).addAttribute(eq("recipes"),argumentCaptor.capture());
 
         Set<Recipe> setInController = argumentCaptor.getValue();
