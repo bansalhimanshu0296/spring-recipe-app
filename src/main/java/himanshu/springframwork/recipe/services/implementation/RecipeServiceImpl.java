@@ -5,6 +5,7 @@ import himanshu.springframwork.recipe.repositories.RecipeRepository;
 import himanshu.springframwork.recipe.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -29,11 +30,25 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Transactional
     public Recipe findRecipeById(Long id) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
         if(!recipeOptional.isPresent()){
             throw new RuntimeException("Recipe Not Found");
         }
         return recipeOptional.get();
+    }
+
+
+    @Override
+    @Transactional
+    public Recipe save(Recipe recipe) {
+        Recipe savedRecipe = recipeRepository.save(recipe);
+        return savedRecipe;
+    }
+
+    @Override
+    public void deleteRecipe(Long id) {
+        recipeRepository.deleteById(id);
     }
 }

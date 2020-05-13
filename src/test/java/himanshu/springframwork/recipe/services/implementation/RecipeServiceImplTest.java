@@ -23,15 +23,16 @@ class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    Recipe recipe;
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         recipeService = new RecipeServiceImpl(recipeRepository);
+        recipe = new Recipe();
     }
 
     @Test
     public void findRecipeById(){
-        Recipe recipe = new Recipe();
         recipe.setId(1L);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
         Mockito.when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
@@ -43,7 +44,7 @@ class RecipeServiceImplTest {
     @Test
     public void findAll() {
 
-        Recipe recipe = new Recipe();
+
         HashSet<Recipe> recipesData = new HashSet<>();
         recipesData.add(recipe);
 
@@ -53,5 +54,22 @@ class RecipeServiceImplTest {
         assertEquals(recipes.size(),1);
 
         verify(recipeRepository,times(1)).findAll();
+    }
+
+    @Test
+    void save() {
+        when(recipeRepository.save(any())).thenReturn(recipe);
+        Recipe retunedRecipe = recipeService.save(recipe);
+        assertNotNull(retunedRecipe);
+        assertEquals(recipe,retunedRecipe);
+        verify(recipeRepository).save(any());
+    }
+
+    @Test
+    void deleteRecipe() {
+        Long id = Long.valueOf(2L);
+
+        recipeService.deleteRecipe(id);
+        verify(recipeRepository).deleteById(anyLong());
     }
 }
